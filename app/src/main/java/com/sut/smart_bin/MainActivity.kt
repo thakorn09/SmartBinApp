@@ -10,13 +10,13 @@ import android.widget.Button
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.github.kittinunf.fuel.Fuel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,6 +42,20 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("TAG", "User profile updated." + name)
         println("OK")
+
+    }
+
+    fun getProfile(view: View) {
+        Fuel.get("https://smart-bin-sut.herokuapp.com/api/User")
+            .response { request, response, result ->
+                println(request)
+                println(response)
+                val (bytes, error) = result
+                if (bytes != null) {
+                    println("[response bytes] ${String(bytes)}")
+                }
+            }
+
 
     }
 
