@@ -35,6 +35,7 @@
         </ImageView>
 
         <TextView
+            android:id="@+id/id_name"
             android:text="Name:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -42,13 +43,15 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"/>
         <EditText
-            android:text="Name:"
+            android:id="@+id/id_name_edit"
+            android:text="Name"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:textSize="25dp"
             android:layout_marginLeft="20dp"
             />
         <TextView
+            android:id="@+id/id_email"
             android:text="Email:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -56,12 +59,14 @@
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="15dp"/>
         <EditText
+            android:id="@+id/id_email_edit"
             android:text="Email"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:textSize="25dp"
             android:layout_marginLeft="20dp"/>
         <TextView
+            android:id="@+id/id_phone"
             android:text="Phone:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -69,12 +74,14 @@
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="15dp"/>
         <EditText
+            android:id="@+id/id_phone_edit"
             android:text="Phone"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:textSize="25dp"
             android:layout_marginLeft="20dp"/>
         <TextView
+            android:id="@+id/id_ids"
             android:text="Student ID:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -82,6 +89,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"/>
         <EditText
+            android:id="@+id/id_ids_edit"
             android:text="Student ID:"
             android:layout_width="350dp"
             android:layout_height="50dp"

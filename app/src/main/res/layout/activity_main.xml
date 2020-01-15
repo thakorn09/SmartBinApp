@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
     <ImageView
         android:layout_above="@+id/Main_layout"
         android:layout_alignParentTop="true"
@@ -30,8 +30,9 @@
 
 
         </ImageView>
-
-        <TextView android:text="Name"
+        <TextView
+            android:id="@+id/id_name"
+            android:text="Name"
             android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -52,6 +53,7 @@
                 />
 
             <TextView
+                android:id="@+id/id_point"
                 android:text="100"
                 android:textSize="30dp"
                 android:layout_marginLeft="1dp"
@@ -107,4 +109,3 @@
 
 
 </RelativeLayout>
-
