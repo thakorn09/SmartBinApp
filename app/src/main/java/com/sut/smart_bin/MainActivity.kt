@@ -43,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         Log.d("TAG", "User profile updated." + name)
         println("OK")
 
+        btn_edit_proflie.setOnClickListener {
+            moveProfile()
+        }
+
     }
 
     fun getProfile(view: View) {
@@ -58,7 +62,10 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
+    
+    fun moveProfile(){
+        setContentView(R.layout.activity_profile)
+    }
     fun moveMainPage(){
             startActivity(Intent(this,LoginActivity::class.java))
             finish()
