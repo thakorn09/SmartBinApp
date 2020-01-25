@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,105 +7,111 @@
     tools:context=".ProfileActivity">
 
     <TextView
-        android:text="Proflie"
-        android:textSize="30dp"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        />
+        android:layout_marginTop="10dp"
+        android:text="Proflie"
+        android:textSize="30dp" />
 
-    <LinearLayout android:id="@+id/Profile"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".ProfileActivity">
 
         <ImageView
-            android:src="@drawable/ic_account"
+            android:id="@+id/id_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginLeft="160dp"
+            android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="50dp">
-
-
-        </ImageView>
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_account"/>
 
         <TextView
             android:id="@+id/id_name"
-            android:text="Name:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="25dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"/>
+            android:text="Name:"
+            android:textSize="25dp" />
+
         <EditText
             android:id="@+id/id_name_edit"
-            android:text="Name"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:textSize="25dp"
             android:layout_marginLeft="20dp"
-            />
+            android:text="Name"
+            android:textSize="25dp"
+            android:inputType="text"/>
+
         <TextView
-            android:id="@+id/id_email"
-            android:text="Email:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="25dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"/>
+            android:text="Email:"
+            android:textSize="25dp" />
+
         <EditText
             android:id="@+id/id_email_edit"
-            android:text="Email"
             android:layout_width="350dp"
             android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+
             android:textSize="25dp"
-            android:layout_marginLeft="20dp"/>
+            android:inputType="text" />
+
         <TextView
-            android:id="@+id/id_phone"
-            android:text="Phone:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="25dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"/>
+            android:text="Phone:"
+            android:textSize="25dp"
+            />
+
         <EditText
             android:id="@+id/id_phone_edit"
-            android:text="Phone"
             android:layout_width="350dp"
             android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:text="Phone"
             android:textSize="25dp"
-            android:layout_marginLeft="20dp"/>
+            android:inputType="text"/>
+
         <TextView
-            android:id="@+id/id_ids"
-            android:text="Student ID:"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="25dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="15dp"
+            android:text="Student ID:"
+            android:textSize="25dp" />
+
         <EditText
             android:id="@+id/id_ids_edit"
-            android:text="Student ID:"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:textSize="25dp"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="15dp"
-            />
+            android:text="Student ID"
+            android:textSize="25dp"
+            android:inputType="text"/>
+
         <Button
             android:id="@+id/btn_call_api"
-            android:text="SAVE"
-            android:layout_centerInParent="true"
-            android:enabled="true"
             android:layout_width="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="165dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
-            android:layout_height="wrap_content"/>
+            android:enabled="true"
+            android:text="SAVE" />
     </LinearLayout>
 </RelativeLayout>

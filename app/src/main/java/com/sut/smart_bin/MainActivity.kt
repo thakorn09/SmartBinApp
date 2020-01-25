@@ -1,118 +1,154 @@
 package com.sut.smart_bin
 
-import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.FuelError
-import com.github.kittinunf.fuel.core.Request
-import com.github.kittinunf.fuel.core.Response
-import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.core.extensions.jsonBody
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.json.FuelJson
-import com.github.kittinunf.result.Result
-import com.google.gson.Gson
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val user = FirebaseAuth.getInstance().currentUser
+        setContentView(R.layout.activity_main)
+        val u = Users()
         user?.let {
 
-            // Name, email address, and profile photo Url
             val name = user.displayName
             val email = user.email
             val photoUrl = user.photoUrl
-
-            // Check if user's email is verified
             val emailVerified = user.isEmailVerified
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
             val uid = user.uid
 
 
-            "https://smart-bin-sut.herokuapp.com/api/User/${uid}".httpGet().responseObject(User.Deserializer()) { req, res, result ->
-                //result is of type Result<User, Exception>
-                val (users, err) = result
+            "https://smart-bin-sut.herokuapp.com/api/User/${uid}".httpGet()
+                .responseObject(Deserializer()) { req, res, result ->
+                    val (users, err) = result
 
-                if (users != null) {
+                    println(uid)
+                    println(user.uid)
 
-                    if (users.uid == uid) {
-                        println("***************** GET ***************")
-                        var Ids = users.ids
-                        var Name = users.name
-                        var Email = users.email
-                        var Phone = users.phone
-                        var Point = users.point
-                        println(users.uid)
+                    if (users != null && users.uid == uid) {
+                        println("***************** GET-User ***************")
+                        /*val u = User(
+                            users.id,
+                            users.uid,
+                            users.ids,
+                            users.name,
+                            users.email,
+                            users.phone,
+                            users.photo,
+                            users.point
+                        )*/
 
-                        val nametxt = findViewById (R.id.id_name) as TextView
-                        nametxt.text = Name
-                        val pointtxt = findViewById (R.id.id_point) as TextView
-                        pointtxt.text = Point.toString()
+                        u.uid = users.uid
+                        u.ids = users.ids
+                        u.name = users.name
+                        u.email = users.email
+                        u.phone = users.phone
+                        u.photo = users.photo
+                        u.point = users.point
+
+
+                        val nametxt = findViewById<TextView>(R.id.id_name)
+                        nametxt.text = u.name
+
+                        val pointtxt = findViewById<TextView>(R.id.id_point)
+                        pointtxt.text = u.point.toString()
+
+                        val img = findViewById<ImageView>(R.id.id_img)
+                        val url = if (u.photo != null) "${u.photo}?w=360" else null //1
+                        Glide.with(img)
+                            .load(url)
+                            .override(300, 300)
+                            .centerCrop()
+                            .transform(CircleCrop())
+                            .into(img)
+
+                        println(result)
+                    } else {
+                        /*val u = Users(
+                            "",
+                            uid,
+                            "",
+                            name.toString(),
+                            email.toString(),
+                            "",
+                            photoUrl.toString(),
+                            0
+                        )*/
+
+
+                        u.uid = uid
+                        u.ids = ""
+                        u.name = name.toString()
+                        u.email = email.toString()
+                        u.phone = ""
+                        u.photo = photoUrl.toString()
+                        u.point = 0
+
+                        val json = """
+                                             {
+                                                        "ids": "${u.ids}",
+                                                        "name": "${u.name}",
+                                                        "email": "${u.email}",
+                                                        "phone": "${u.phone}",
+                                                        "point": ${u.point},
+                                                        "photo": "${u.photo}",
+                                                        "uid": "${u.uid}"
+                                                }
+                                            """.trimIndent()
+
+                        println("***************** POST-User ***************")
+                        Fuel.post("https://smart-bin-sut.herokuapp.com/api/User")
+                            .jsonBody(json)
+                            .also { println(it) }
+                            .response { result ->
+                                println(result)
+                            }
                     }
-                }else{
-                    println("***************** POST ***************")
-                    Fuel.post("https://smart-bin-sut.herokuapp.com/api/User")
-                        .jsonBody("{ \"uid\" : \"${uid}\" }")
-                        .also { println(it) }
-                        .response { result -> }
 
                 }
-            }
         }
 
-        setContentView(R.layout.activity_main)
-        btn_sign_out.setOnClickListener{
+        btn_sign_out.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             moveMainPage()
         }
-        // Log.d("TAG", "User profile updated." + name)
-        println("OK")
 
         btn_edit_proflie.setOnClickListener {
-            moveProfile()
+            moveProfile(u)
+
         }
 
     }
-    data class User(val id: String = "",
-                    val ids: String = "",
-                    val uid: String = "",
-                    val name: String = "",
-                    val email: String = "",
-                    val phone: String = "",
-                    val point: Long = 0) {
-        class Deserializer : ResponseDeserializable<User> {
-        override fun deserialize(content: String) = Gson().fromJson(content, User::class.java)
-    } }
 
-
-
-    
-    fun moveProfile(){
-        startActivity(Intent(this,ProfileActivity::class.java))
+    fun moveProfile(u: Users) {
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra("USERS", u)
+        startActivity(intent)
 
     }
-    fun moveMainPage(){
-            startActivity(Intent(this,LoginActivity::class.java))
-            finish()
+
+    fun moveMainPage() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
 
     }
+
+
 }
