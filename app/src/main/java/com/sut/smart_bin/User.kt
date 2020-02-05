@@ -20,7 +20,7 @@ data class User(
     val Email: String = "",
     val Phone: String = "",
     val Photo: String = "",
-
+    val Point: Int = 0,
     override val GoodBin: Long = 0,
     override val BadBin: Long = 0
 
@@ -40,15 +40,13 @@ class Users : Serializable {
     var Email: String = ""
     var Phone: String = ""
     var Photo: String = ""
-    var Bin = Bin(
-        GoodBin = 0,
-        BadBin = 0
-    )
+    var Point: Int = 0
+    var Bin = Bin(0,0)
 
 }
 
 class Bin (
     var GoodBin: Long = 0,
-var BadBin: Long = 0
-)
+    var BadBin: Long = 0
+) : Serializable
 

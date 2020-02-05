@@ -1,22 +1,25 @@
 package com.sut.smart_bin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.google.firebase.auth.FirebaseAuth
+
 import kotlinx.android.synthetic.main.activity_profile.*
 
-class ProfileActivity : AppCompatActivity() {
+
+class ProfileActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_profile)
 
         val u = intent.getSerializableExtra("USERS") as Users
@@ -66,6 +69,7 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
+
     }
 
     fun Profile(
@@ -85,8 +89,8 @@ class ProfileActivity : AppCompatActivity() {
             "Email": "${email}",
             "Phone": "${phone}",
             "Photo": "${photo}",
-            "Uid": "${uid}"
-                    [
+            "Uid": "${uid}",
+             "Bin" :         [
                         {
                     "GoodBin" : ${goodBin},
                     "BadBin" : ${binBin}
@@ -99,7 +103,13 @@ class ProfileActivity : AppCompatActivity() {
             .jsonBody(json)
             .also { println(it) }
             .response { result -> }
+
+        Toast.makeText(applicationContext,"Success",Toast.LENGTH_SHORT).show()
+
+
     }
+
+
 
 
 }

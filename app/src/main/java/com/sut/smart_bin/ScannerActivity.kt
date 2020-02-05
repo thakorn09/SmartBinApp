@@ -1,13 +1,18 @@
 package com.sut.smart_bin
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Vibrator
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import me.dm7.barcodescanner.zxing.ZXingScannerView.ResultHandler
@@ -19,6 +24,7 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_scanner)
 
         if (!checkPermission())
@@ -37,6 +43,7 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
             arrayOf(android.Manifest.permission.CAMERA),
             REQUES_CAMERA
         )
+
     }
     override fun onResume() {
         super.onResume()
@@ -49,21 +56,52 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
             scannerView?.startCamera()
         }
 
+
     }
-    override fun handleResult(p0: Result?) {
-        val result = p0?.text
+    override fun handleResult(rawResult: Result) {
+        /*val result = p0?.text
         val vibrator = applicationContext.getSystemService(Context.VIBRATOR_SERVICE)as Vibrator
         vibrator.vibrate(1000)
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Result")
-        builder.setPositiveButton("OK") {dialog, which ->
+        builder.setPositiveButton("Yes") {dialog, which ->
             scannerView?.resumeCameraPreview(this@ScannerActivity)
             startActivity(intent)
         }
         builder.setMessage(result)
         val alert =  builder.create()
         println(alert)
-        alert.show()
+        alert.show()*/
+
+        /*startActivity(Intent(this, ContinueTrashActivity::class.java))
+
+        finish()*/
+        var sCan = rawResult.toString()
+        changeBinstate(sCan)
+
     }
+
+
+    fun changeBinstate( sCan : String){
+
+
+
+
+        Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/1")
+            .also { println(it) }
+            .response { result -> }
+
+
+
+        Toast.makeText(applicationContext,sCan,Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, ContinueTrashActivity::class.java))
+
+        finish()
+
+    }
+
+
+
+
 }
