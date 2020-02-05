@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.json.jsonDeserializer
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,18 +32,22 @@ class MainActivity : AppCompatActivity() {
             val name = user.displayName
             val email = user.email
             val photoUrl = user.photoUrl
-            val emailVerified = user.isEmailVerified
+            //val emailVerified = user.isEmailVerified
             val uid = user.uid
 
 
-            "https://smart-bin-sut.herokuapp.com/api/User/${uid}".httpGet()
-                .responseObject(Deserializer()) { req, res, result ->
-                    val (users, err) = result
+            //"https://smartbin-sut.herokuapp.com/User/${uid}".httpGet()
+                //.responseObject(Deserializer()) { req, res, result ->
+                    Fuel.get( "https://smartbin-sut.herokuapp.com/User/${uid}")
+                        .responseObject(Deserializer())  {  result ->
+                        val (users,error) = result
 
                     println(uid)
-                    println(user.uid)
+                            println(error)
+                    println(result)
+                    println("User" + user.uid)
 
-                    if (users != null && users.uid == uid) {
+                    if (users != null && users.Uid == uid) {
                         println("***************** GET-User ***************")
                         /*val u = User(
                             users.id,
@@ -55,23 +60,25 @@ class MainActivity : AppCompatActivity() {
                             users.point
                         )*/
 
-                        u.uid = users.uid
-                        u.ids = users.ids
-                        u.name = users.name
-                        u.email = users.email
-                        u.phone = users.phone
-                        u.photo = users.photo
-                        u.point = users.point
+                        u.Uid = users.Uid
+                        u.Ids = users.Ids
+                        u.Name = users.Name
+                        u.Email = users.Email
+                        u.Phone = users.Phone
+                        u.Photo = users.Photo
+                        u.Bin.GoodBin = users.GoodBin
+                        u.Bin.BadBin = users.BadBin
+
 
 
                         val nametxt = findViewById<TextView>(R.id.id_name)
-                        nametxt.text = u.name
+                        nametxt.text = u.Name
 
-                        val pointtxt = findViewById<TextView>(R.id.id_point)
-                        pointtxt.text = u.point.toString()
+                        //val pointtxt = findViewById<TextView>(R.id.id_point)
+                       // pointtxt.text = u.Point.toString()
 
                         val img = findViewById<ImageView>(R.id.id_img)
-                        val url = if (u.photo != null) "${u.photo}?w=360" else null //1
+                        val url = if (u.Photo != null) "${u.Photo}?w=360" else null //1
                         Glide.with(img)
                             .load(url)
                             .override(300, 300)
@@ -93,28 +100,34 @@ class MainActivity : AppCompatActivity() {
                         )*/
 
 
-                        u.uid = uid
-                        u.ids = ""
-                        u.name = name.toString()
-                        u.email = email.toString()
-                        u.phone = ""
-                        u.photo = photoUrl.toString()
-                        u.point = 0
+                        u.Uid = uid
+                        u.Ids = ""
+                        u.Name = name.toString()
+                        u.Email = email.toString()
+                        u.Phone = ""
+                        u.Photo = photoUrl.toString()
+                        u.Bin.GoodBin = 0
+                        u.Bin.BadBin  = 0
 
                         val json = """
                                              {
-                                                        "ids": "${u.ids}",
-                                                        "name": "${u.name}",
-                                                        "email": "${u.email}",
-                                                        "phone": "${u.phone}",
-                                                        "point": ${u.point},
-                                                        "photo": "${u.photo}",
-                                                        "uid": "${u.uid}"
+                                                        "Ids": "${u.Ids}",
+                                                        "Name": "${u.Name}",
+                                                        "Email": "${u.Email}",
+                                                        "Phone": "${u.Phone}",
+                                                        "Photo": "${u.Photo}",
+                                                        "Uid": "${u.Uid}",
+                                                        "Bin": [
+                                                            {
+                                                            "GoodBin" : ${u.Bin.GoodBin},
+                                                            "BadBin" : ${u.Bin.BadBin}
+                                                                }
+                                                            ]
                                                 }
                                             """.trimIndent()
 
                         println("***************** POST-User ***************")
-                        Fuel.post("https://smart-bin-sut.herokuapp.com/api/User")
+                        Fuel.post("https://smartbin-sut.herokuapp.com/User")
                             .jsonBody(json)
                             .also { println(it) }
                             .response { result ->

@@ -23,20 +23,19 @@ class ProfileActivity : AppCompatActivity() {
 
         println("***************** GET 2 ***************")
         //val u = Users()
-        var Ids = u.ids
-        var Uid = u.uid
-        var Name = u.name
-        var Email = u.email
-        var Phone = u.phone
-        var Photo = u.photo
-        var Point = u.point
+        var Ids = u.Ids
+        var Uid = u.Uid
+        var Name = u.Name
+        var Email = u.Email
+        var Phone = u.Phone
+        var Photo = u.Photo
 
-        println("Test : ${u.uid}")
+        println("Test : ${u.Uid}")
         fun String.toEditable(): Editable =
             Editable.Factory.getInstance().newEditable(this)
 
         val img = findViewById<ImageView>(R.id.id_img)
-        val url = if (u.photo != null) "${u.photo}?w=360" else null //1
+        val url = if (u.Photo != null) "${u.Photo}?w=360" else null //1
         Glide.with(img)
             .load(url)
             .override(300, 300)
@@ -49,11 +48,10 @@ class ProfileActivity : AppCompatActivity() {
         val phonetxt = findViewById<EditText>(R.id.id_phone_edit)
         val idstxt = findViewById<EditText>(R.id.id_ids_edit)
 
-        nametxt.text = Name?.toEditable()
-        emailtxt.text = Email?.toEditable()
-        phonetxt.text = Phone?.toEditable()
-        idstxt.text = Ids?.toEditable()
-
+        nametxt.text = Name.toEditable()
+        emailtxt.text = Email.toEditable()
+        phonetxt.text = Phone.toEditable()
+        idstxt.text = Ids.toEditable()
 
 
         btn_call_api.setOnClickListener {
@@ -63,7 +61,8 @@ class ProfileActivity : AppCompatActivity() {
                 emailtxt.text,
                 phonetxt.text,
                 idstxt.text,
-                Uid, Point, Photo
+                Uid, Photo,
+                u.Bin.GoodBin,u.Bin.BadBin
             )
         }
 
@@ -75,22 +74,28 @@ class ProfileActivity : AppCompatActivity() {
         phone: Editable,
         ids: Editable,
         uid: String,
-        point: Long,
-        photo: String
+        photo: String,
+        goodBin: Long,
+        binBin: Long
     ) {
         val json = """
  {
-            "ids": "${ids}",
-            "name": "${name}",
-            "email": "${email}",
-            "phone": "${phone}",
-            "point": ${point}, 
-            "photo": "${photo}",
-            "uid": "${uid}"
+            "Ids": "${ids}",
+            "Name": "${name}",
+            "Email": "${email}",
+            "Phone": "${phone}",
+            "Photo": "${photo}",
+            "Uid": "${uid}"
+                    [
+                        {
+                    "GoodBin" : ${goodBin},
+                    "BadBin" : ${binBin}
+                        }
+                    ]
         }
 """.trimIndent()
         val user = FirebaseAuth.getInstance().currentUser
-        Fuel.put("https://smart-bin-sut.herokuapp.com/api/User/${user!!.uid}")
+        Fuel.put("https://smartbin-sut.herokuapp.com/User/${user!!.uid}")
             .jsonBody(json)
             .also { println(it) }
             .response { result -> }

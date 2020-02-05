@@ -3,31 +3,52 @@ package com.sut.smart_bin
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
 import java.io.Serializable
+import java.sql.Array
+import java.util.*
 
 
-data class User(val id: String = "",
-                val ids: String = "",
-                val uid: String = "",
-                val name: String = "",
-                val email: String = "",
-                val phone: String = "",
-                var photo: String = "",
-                val point: Long = 0)
+interface Bins {
+    val GoodBin: Long
+    val BadBin: Long
+}
+
+data class User(
+    val Id: String = "",
+    val Ids: String = "",
+    val Uid: String = "",
+    val Name: String = "",
+    val Email: String = "",
+    val Phone: String = "",
+    val Photo: String = "",
+
+    override val GoodBin: Long = 0,
+    override val BadBin: Long = 0
+
+) : Bins
 
 
-    class Deserializer : ResponseDeserializable<User> {
-        override fun deserialize(content: String) = Gson().fromJson(content, User::class.java)
-    }
+class Deserializer : ResponseDeserializable<User> {
+    override fun deserialize(content: String) = Gson().fromJson(content, User::class.java)
+}
 
 
 class Users : Serializable {
 
-    var uid: String = ""
-    var ids: String = ""
-    var name: String = ""
-    var email: String = ""
-    var phone: String = ""
-    var photo: String = ""
-    var point: Long = 0
+    var Uid: String = ""
+    var Ids: String = ""
+    var Name: String = ""
+    var Email: String = ""
+    var Phone: String = ""
+    var Photo: String = ""
+    var Bin = Bin(
+        GoodBin = 0,
+        BadBin = 0
+    )
+
 }
+
+class Bin (
+    var GoodBin: Long = 0,
+var BadBin: Long = 0
+)
 
