@@ -2,11 +2,15 @@ package com.sut.smart_bin
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -15,10 +19,12 @@ import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.json.jsonDeserializer
 import com.google.firebase.auth.FirebaseAuth
+
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+    private var btn_cast : Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +38,11 @@ class MainActivity : AppCompatActivity() {
             val name = user.displayName
             val email = user.email
             val photoUrl = user.photoUrl
+
             //val emailVerified = user.isEmailVerified
             val uid = user.uid
+
+
 
 
             //"https://smartbin-sut.herokuapp.com/User/${uid}".httpGet()
@@ -66,19 +75,27 @@ class MainActivity : AppCompatActivity() {
                         u.Email = users.Email
                         u.Phone = users.Phone
                         u.Photo = users.Photo
-                        u.Bin.GoodBin = users.GoodBin
-                        u.Bin.BadBin = users.BadBin
+                        u.Point = users.Point
+                        u.GoodBin = users.GoodBin
+                        u.BadBin = users.BadBin
 
+                        val upoint = u.GoodBin *10
+                        if(u.Point != upoint.toInt()){
+                            u.Point=upoint.toInt()
+                            Profile(
+                                u.Name,u.Email,u.Phone,u.Ids,u.Uid,u.Photo,u.Point,u.GoodBin,u.BadBin
+                            )
 
+                        }
 
                         val nametxt = findViewById<TextView>(R.id.id_name)
                         nametxt.text = u.Name
 
-                        //val pointtxt = findViewById<TextView>(R.id.id_point)
-                       // pointtxt.text = u.Point.toString()
+                        val pointtxt = findViewById<TextView>(R.id.id_point)
+                       pointtxt.text = u.Point.toString()
 
                         val img = findViewById<ImageView>(R.id.id_img)
-                        val url = if (u.Photo != null) "${u.Photo}?w=360" else null //1
+                        val url = if (u.Photo != null) u.Photo else null
                         Glide.with(img)
                             .load(url)
                             .override(300, 300)
@@ -99,15 +116,15 @@ class MainActivity : AppCompatActivity() {
                             0
                         )*/
 
-
                         u.Uid = uid
                         u.Ids = ""
                         u.Name = name.toString()
                         u.Email = email.toString()
                         u.Phone = ""
                         u.Photo = photoUrl.toString()
-                        u.Bin.GoodBin = 0
-                        u.Bin.BadBin  = 0
+                        u.Point = 0
+                        u.GoodBin = 0
+                        u.BadBin  = 0
 
                         val json = """
                                              {
@@ -117,12 +134,10 @@ class MainActivity : AppCompatActivity() {
                                                         "Phone": "${u.Phone}",
                                                         "Photo": "${u.Photo}",
                                                         "Uid": "${u.Uid}",
-                                                        "Bin": [
-                                                            {
-                                                            "GoodBin" : ${u.Bin.GoodBin},
-                                                            "BadBin" : ${u.Bin.BadBin}
-                                                                }
-                                                            ]
+                                                        "Point":${u.Point},
+                                                        "GoodBin" :${u.GoodBin},
+                                                        "BadBin" :${u.BadBin}
+                                                        
                                                 }
                                             """.trimIndent()
 
@@ -138,6 +153,7 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
+
         btn_sign_out.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             moveMainPage()
@@ -147,6 +163,13 @@ class MainActivity : AppCompatActivity() {
             moveProfile(u)
 
         }
+        btn_cast = findViewById(R.id.btn_cast) as Button
+
+        btn_cast!!.setOnClickListener{
+            val intent = Intent(this@MainActivity, ScannerActivity::class.java)
+            intent.putExtra("USERS", u)
+            startActivity(intent)
+        }
 
     }
 
@@ -154,14 +177,26 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, ProfileActivity::class.java)
         intent.putExtra("USERS", u)
         startActivity(intent)
-
     }
 
     fun moveMainPage() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
-
     }
 
-
+    fun Profile(
+        name: String,
+        email: String,
+        phone: String,
+        ids: String,
+        uid: String,
+        photo: String,
+        point: Int,
+        goodBin: Long,
+        binBin: Long
+    ) { val user = FirebaseAuth.getInstance().currentUser
+        Fuel.put("https://smartbin-sut.herokuapp.com/User/${user!!.uid}/${point}")
+            .also { println(it) }
+            .response { result -> println(result) }
+    }
 }

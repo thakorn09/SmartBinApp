@@ -7,9 +7,9 @@ import java.sql.Array
 import java.util.*
 
 
-interface Bins {
-    val GoodBin: Long
-    val BadBin: Long
+abstract class Bins {
+    abstract val GoodBin: Long
+    abstract val BadBin: Long
 }
 
 data class User(
@@ -20,11 +20,11 @@ data class User(
     val Email: String = "",
     val Phone: String = "",
     val Photo: String = "",
-    val Point: Int = 0,
-    override val GoodBin: Long = 0,
-    override val BadBin: Long = 0
+    val Point: Int,
+    override val GoodBin: Long,
+    override val BadBin: Long
 
-) : Bins
+) : Bins()
 
 
 class Deserializer : ResponseDeserializable<User> {
@@ -41,12 +41,11 @@ class Users : Serializable {
     var Phone: String = ""
     var Photo: String = ""
     var Point: Int = 0
-    var Bin = Bin(0,0)
+    var GoodBin: Long = 0
+    var BadBin: Long = 0
+
 
 }
 
-class Bin (
-    var GoodBin: Long = 0,
-    var BadBin: Long = 0
-) : Serializable
+
 

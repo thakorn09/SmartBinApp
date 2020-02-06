@@ -32,6 +32,8 @@ class ProfileActivity : AppCompatActivity(){
         var Email = u.Email
         var Phone = u.Phone
         var Photo = u.Photo
+        var GoodBin = u.GoodBin
+        var BadBin = u.BadBin
 
         println("Test : ${u.Uid}")
         fun String.toEditable(): Editable =
@@ -65,7 +67,8 @@ class ProfileActivity : AppCompatActivity(){
                 phonetxt.text,
                 idstxt.text,
                 Uid, Photo,
-                u.Bin.GoodBin,u.Bin.BadBin
+                GoodBin,
+                BadBin
             )
         }
 
@@ -90,12 +93,8 @@ class ProfileActivity : AppCompatActivity(){
             "Phone": "${phone}",
             "Photo": "${photo}",
             "Uid": "${uid}",
-             "Bin" :         [
-                        {
-                    "GoodBin" : ${goodBin},
-                    "BadBin" : ${binBin}
-                        }
-                    ]
+            "GoodBin" :${goodBin},
+            "BadBin" :${binBin}
         }
 """.trimIndent()
         val user = FirebaseAuth.getInstance().currentUser

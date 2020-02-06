@@ -24,6 +24,17 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val u = intent.getSerializableExtra("USERS") as Users
+        var Ids = u.Ids
+        var Uid = u.Uid
+        var Name = u.Name
+        var Email = u.Email
+        var Phone = u.Phone
+        var Photo = u.Photo
+        var GoodBin = u.GoodBin
+        var BadBin = u.BadBin
+
+
 
         setContentView(R.layout.activity_scanner)
 
@@ -84,19 +95,19 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
 
 
     fun changeBinstate( sCan : String){
-
-
-
-
-        Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/1")
+        val user = FirebaseAuth.getInstance().currentUser
+        Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/${user!!.uid}/1")
             .also { println(it) }
             .response { result -> }
 
 
 
         Toast.makeText(applicationContext,sCan,Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, ContinueTrashActivity::class.java))
 
+
+        val intent = Intent(this, ContinueTrashActivity::class.java)
+        intent.putExtra("scan", sCan)
+        startActivity(intent)
         finish()
 
     }
