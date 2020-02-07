@@ -28,8 +28,6 @@ class ContinueTrashActivity : AppCompatActivity() {
         val sCan = intent.getSerializableExtra("scan")
 
 
-
-
         listenToMultiple()
 
         btn_NoTrash.setOnClickListener {
