@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/Mobie-app.iml" filepath="$PROJECT_DIR$/app/Mobie-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/SMART_BIN.iml" filepath="$PROJECT_DIR$/SMART_BIN.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/smartbinapp-app.iml" filepath="$PROJECT_DIR$/app/smartbinapp-app.iml" />
     </modules>
   </component>
 </project>

@@ -76,17 +76,20 @@ class MainActivity : AppCompatActivity() {
                         u.Phone = users.Phone
                         u.Photo = users.Photo
                         u.Point = users.Point
-                        u.GoodBin = users.GoodBin
-                        u.BadBin = users.BadBin
+                        u.Bin?.GoodBin = users.Bin?.GoodBin
+                        u.Bin?.BadBin = users.Bin?.BadBin
 
-                        val upoint = u.GoodBin *10
-                        if(u.Point != upoint.toInt()){
-                            u.Point=upoint.toInt()
-                            Profile(
-                                u.Name,u.Email,u.Phone,u.Ids,u.Uid,u.Photo,u.Point,u.GoodBin,u.BadBin
+
+
+
+                      /*  val upoint = u.Bin?.BadBin * 10
+                        if(u.Point != upoint?.toInt()){
+                            u.Point=upoint?.toInt()
+                            UpPoint(
+                                u.Name,u.Email,u.Phone,u.Ids,u.Uid,u.Photo,u.Point,u.Bin?.GoodBin,u.Bin?.BadBin
                             )
 
-                        }
+                        }*/
 
                         val nametxt = findViewById<TextView>(R.id.id_name)
                         nametxt.text = u.Name
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                        pointtxt.text = u.Point.toString()
 
                         val img = findViewById<ImageView>(R.id.id_img)
-                        val url = if (u.Photo != null) u.Photo else null
+                        val url =  u.Photo
                         Glide.with(img)
                             .load(url)
                             .override(300, 300)
@@ -123,20 +126,20 @@ class MainActivity : AppCompatActivity() {
                         u.Phone = ""
                         u.Photo = photoUrl.toString()
                         u.Point = 0
-                        u.GoodBin = 0
-                        u.BadBin  = 0
 
                         val json = """
-                                             {
+                                                {
                                                         "Ids": "${u.Ids}",
                                                         "Name": "${u.Name}",
                                                         "Email": "${u.Email}",
                                                         "Phone": "${u.Phone}",
                                                         "Photo": "${u.Photo}",
                                                         "Uid": "${u.Uid}",
-                                                        "Point":${u.Point},
-                                                        "GoodBin" :${u.GoodBin},
-                                                        "BadBin" :${u.BadBin}
+                                                        "Point": ${u.Point},
+                                                        "Bin": [ {
+                                                        "GoodBin": 0,
+                                                        "BadBin": 0
+                                                        } ]
                                                         
                                                 }
                                             """.trimIndent()
@@ -184,7 +187,7 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
-    fun Profile(
+    fun UpPoint(
         name: String,
         email: String,
         phone: String,
@@ -192,8 +195,8 @@ class MainActivity : AppCompatActivity() {
         uid: String,
         photo: String,
         point: Int,
-        goodBin: Long,
-        binBin: Long
+        goodBin: Long?,
+        binBin: Long?
     ) { val user = FirebaseAuth.getInstance().currentUser
         Fuel.put("https://smartbin-sut.herokuapp.com/User/${user!!.uid}/${point}")
             .also { println(it) }

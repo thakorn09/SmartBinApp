@@ -32,8 +32,8 @@ class ProfileActivity : AppCompatActivity(){
         var Email = u.Email
         var Phone = u.Phone
         var Photo = u.Photo
-        var GoodBin = u.GoodBin
-        var BadBin = u.BadBin
+        var GoodBin = u.Bin?.GoodBin
+        var BadBin = u.Bin?.BadBin
 
         println("Test : ${u.Uid}")
         fun String.toEditable(): Editable =
@@ -59,6 +59,7 @@ class ProfileActivity : AppCompatActivity(){
         idstxt.text = Ids.toEditable()
 
 
+
         btn_call_api.setOnClickListener {
             println("+++++++++++++++++++++++++++++++++++++++")
             Profile(
@@ -82,8 +83,8 @@ class ProfileActivity : AppCompatActivity(){
         ids: Editable,
         uid: String,
         photo: String,
-        goodBin: Long,
-        binBin: Long
+        goodBin: Long?,
+        binBin: Long?
     ) {
         val json = """
  {
@@ -92,9 +93,7 @@ class ProfileActivity : AppCompatActivity(){
             "Email": "${email}",
             "Phone": "${phone}",
             "Photo": "${photo}",
-            "Uid": "${uid}",
-            "GoodBin" :${goodBin},
-            "BadBin" :${binBin}
+            "Uid": "${uid}"
         }
 """.trimIndent()
         val user = FirebaseAuth.getInstance().currentUser

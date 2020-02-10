@@ -31,8 +31,6 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
         var Email = u.Email
         var Phone = u.Phone
         var Photo = u.Photo
-        var GoodBin = u.GoodBin
-        var BadBin = u.BadBin
 
 
 
