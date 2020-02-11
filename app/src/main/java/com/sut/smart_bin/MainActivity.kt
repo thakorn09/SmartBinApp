@@ -43,16 +43,13 @@ class MainActivity : AppCompatActivity() {
             val uid = user.uid
 
 
-
-
             //"https://smartbin-sut.herokuapp.com/User/${uid}".httpGet()
                 //.responseObject(Deserializer()) { req, res, result ->
                     Fuel.get( "https://smartbin-sut.herokuapp.com/User/${uid}")
-                        .responseObject(Deserializer())  {  result ->
+                        .responseObject(Deserializer())  { _, _,   result ->
                         val (users,error) = result
 
                     println(uid)
-                            println(error)
                     println(result)
                     println("User" + user.uid)
 
@@ -76,20 +73,18 @@ class MainActivity : AppCompatActivity() {
                         u.Phone = users.Phone
                         u.Photo = users.Photo
                         u.Point = users.Point
-                        u.Bin?.GoodBin = users.Bin?.GoodBin
-                        u.Bin?.BadBin = users.Bin?.BadBin
+                        u.Bin?.GoodBin = users.Bin.GoodBin
+                        u.Bin?.BadBin = users.Bin.BadBin
 
 
+                        /*  val upoint = u.Bin?.BadBin * 10
+                          if(u.Point != upoint?.toInt()){
+                              u.Point=upoint?.toInt()
+                              UpPoint(
+                                  u.Name,u.Email,u.Phone,u.Ids,u.Uid,u.Photo,u.Point,u.Bin?.GoodBin,u.Bin?.BadBin
+                              )
 
-
-                      /*  val upoint = u.Bin?.BadBin * 10
-                        if(u.Point != upoint?.toInt()){
-                            u.Point=upoint?.toInt()
-                            UpPoint(
-                                u.Name,u.Email,u.Phone,u.Ids,u.Uid,u.Photo,u.Point,u.Bin?.GoodBin,u.Bin?.BadBin
-                            )
-
-                        }*/
+                          }*/
 
                         val nametxt = findViewById<TextView>(R.id.id_name)
                         nametxt.text = u.Name
@@ -136,10 +131,10 @@ class MainActivity : AppCompatActivity() {
                                                         "Photo": "${u.Photo}",
                                                         "Uid": "${u.Uid}",
                                                         "Point": ${u.Point},
-                                                        "Bin": [ {
+                                                        "Bin":  {
                                                         "GoodBin": 0,
                                                         "BadBin": 0
-                                                        } ]
+                                                        } 
                                                         
                                                 }
                                             """.trimIndent()

@@ -1,37 +1,34 @@
 package com.sut.smart_bin
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.github.kittinunf.fuel.core.Deserializable
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.sql.Array
 import java.util.*
 
 
-/*abstract class  Bins {
-    abstract val GoodBin: Long
-    abstract val BadBin: Long
-}
-
+data class Bin(
+    val BadBin: Long,
+    val GoodBin: Long
+)
 data class User(
-    val Id: String = "",
-    val Ids: String = "",
-    val Uid: String = "",
-    val Name: String = "",
-    val Email: String = "",
-    val Phone: String = "",
-    val Photo: String = "",
-    val Point: Int,
-    override val GoodBin: Long ,
-    override val BadBin: Long
+    val Bin: Bin,
+    val Email: String,
+    val Ids: String,
+    val Name: String,
+    val Phone: String,
+    val Photo: String,
+    val Point: Long,
+    val Uid: String
+)
 
-) : Bins()*/
-
-
-class Deserializer : ResponseDeserializable<Users> {
-    override fun deserialize(content: String) = Gson().fromJson(content, Users::class.java)
+class Deserializer : ResponseDeserializable<User> {
+    override fun deserialize(content: String): User = Gson().fromJson(content, User::class.java)
 }
-
 
 class Users : Serializable {
 
@@ -41,11 +38,11 @@ class Users : Serializable {
     var Email: String = ""
     var Phone: String = ""
     var Photo: String = ""
-    var Point: Int = 0
-    val Bin : Bin? = null
+    var Point: Long = 0
+    val Bin: Bins? = null
 }
 
-class Bin (
+class Bins(
     var GoodBin: Long?,
     var BadBin: Long?
 )

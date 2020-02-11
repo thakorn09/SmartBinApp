@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_profile.*
 
 
-class ProfileActivity : AppCompatActivity(){
+class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +93,11 @@ class ProfileActivity : AppCompatActivity(){
             "Email": "${email}",
             "Phone": "${phone}",
             "Photo": "${photo}",
-            "Uid": "${uid}"
+            "Uid": "${uid}",
+            "Bin":  {
+                    "GoodBin": ${goodBin},
+                    "BadBin": ${binBin} 
+                    } 
         }
 """.trimIndent()
         val user = FirebaseAuth.getInstance().currentUser
@@ -102,12 +106,10 @@ class ProfileActivity : AppCompatActivity(){
             .also { println(it) }
             .response { result -> }
 
-        Toast.makeText(applicationContext,"Success",Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
 
 
     }
-
-
 
 
 }
