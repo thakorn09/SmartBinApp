@@ -32,8 +32,8 @@ class ProfileActivity : AppCompatActivity() {
         var Email = u.Email
         var Phone = u.Phone
         var Photo = u.Photo
-        var GoodBin = u.Bin?.GoodBin
-        var BadBin = u.Bin?.BadBin
+        var GoodBin = u.GoodBin
+        var BadBin = u.BadBin
 
         println("Test : ${u.Uid}")
         fun String.toEditable(): Editable =
