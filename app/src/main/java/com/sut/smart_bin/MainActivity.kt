@@ -2,15 +2,18 @@ package com.sut.smart_bin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,18 +24,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         val user = FirebaseAuth.getInstance().currentUser
+        val userid = FirebaseAuth.getInstance().getUid().toString()
         setContentView(R.layout.activity_main)
+
+
+
+
+
         val u = Users(0,0, "","", "","", "",0, "" )
         user?.let {
 
             val name = user.displayName
             val email = user.email
             val photoUrl = user.photoUrl
+            val uid = userid
 
             //val emailVerified = user.isEmailVerified
-            val uid = user.uid
 
 
             //"https://smartbin-sut.herokuapp.com/User/${uid}".httpGet()
@@ -69,14 +77,11 @@ class MainActivity : AppCompatActivity() {
                         u.BadBin = users.Bin.BadBin
 
 
-                        /*  val upoint = u.Bin?.BadBin * 10
-                          if(u.Point != upoint?.toInt()){
-                              u.Point=upoint?.toInt()
-                              UpPoint(
-                                  u.Name,u.Email,u.Phone,u.Ids,u.Uid,u.Photo,u.Point,u.Bin?.GoodBin,u.Bin?.BadBin
-                              )
-
-                          }*/
+                          val upoint = u.GoodBin * 10
+                          if(u.Point != upoint){
+                              u.Point=upoint
+                              UpPoint(u.Point)
+                          }
 
                         val nametxt = findViewById<TextView>(R.id.id_name)
                         nametxt.text = u.Name
@@ -175,15 +180,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun UpPoint(
-        name: String,
-        email: String,
-        phone: String,
-        ids: String,
-        uid: String,
-        photo: String,
-        point: Int,
-        goodBin: Long?,
-        binBin: Long?
+        point: Long
     ) { val user = FirebaseAuth.getInstance().currentUser
         Fuel.put("https://smartbin-sut.herokuapp.com/User/${user!!.uid}/${point}")
             .also { println(it) }

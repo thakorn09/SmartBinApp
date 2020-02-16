@@ -25,63 +25,36 @@ class ContinueTrashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_continue_trash)
+        val user = FirebaseAuth.getInstance().currentUser
         val sCan = intent.getSerializableExtra("scan")
 
 
-
-
-        listenToMultiple()
-
         btn_NoTrash.setOnClickListener {
-            Toast.makeText(applicationContext,"State2: "+sCan,Toast.LENGTH_SHORT).show()
-            Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/0")
+            Toast.makeText(applicationContext,"Finish",Toast.LENGTH_SHORT).show()
+            Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/${user!!.uid}/0")
                 .also { println(it) }
                 .response { result -> }
             moveMainPage()
         }
 
+
         btn_YesTrash.setOnClickListener {
             Toast.makeText(applicationContext,"State2: "+sCan,Toast.LENGTH_SHORT).show()
-            Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/2")
+            Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/${user!!.uid}/2")
                 .also { println(it) }
                 .response { result -> }
         }
-
         //btn_YesTrash = findViewById(R.id.btn_YesTrash) as Button
 
        /* btn_YesTrash!!.setOnClickListener{
             val intent = Intent(this@ContinueTrashActivity, ScannerActivity::class.java)
             startActivity(intent)
         }*/
-
-
-    }
-
-
-    private fun listenToMultiple() {
-        val docRef = db.collection("SmartBin").document("State")
-        docRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                //Log.w(TAG, "Listen failed.", e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && snapshot.exists()) {
-                Toast.makeText(applicationContext,"Current data:"+snapshot.data,Toast.LENGTH_SHORT).show()
-                //Log.d(TAG, "Current data: ${snapshot.data}")
-            } else {
-                Toast.makeText(applicationContext,"Current data: null",Toast.LENGTH_SHORT).show()
-                //Log.d(TAG, "Current data: null")
-            }
-        }
-
     }
 
     fun moveMainPage() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
-
-
 
 }

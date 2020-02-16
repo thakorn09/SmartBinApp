@@ -9,8 +9,9 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_above="@+id/Main_layout"
         android:layout_alignParentTop="true"
         android:src="@drawable/logo_title" />
@@ -26,7 +27,7 @@
             android:id="@+id/id_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="160dp"
+            android:layout_marginLeft="145dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
@@ -39,6 +40,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
             android:text="Name"
             android:textSize="30dp" />
 
@@ -49,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="145dp"
+                android:layout_marginLeft="130dp"
                 android:text="Point :"
                 android:textSize="30dp" />
 
@@ -66,7 +68,7 @@
 
         <Button
             android:id="@+id/btn_edit_proflie"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="155dp"
@@ -74,33 +76,37 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="15dp"
             android:enabled="true"
-            android:text="Edit Proflie" />
+            android:text="Edit Proflie"
+            android:background="#ea7a1d"
+            />
 
         <Button
             android:id="@+id/btn_cast"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="161dp"
+            android:layout_marginLeft="155dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="15dp"
             android:enabled="true"
-            android:text="Get point"
+            android:text="Bin"
+            android:background="#ea7a1d"
             />
 
 
         <Button
             android:id="@+id/btn_sign_out"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="165dp"
+            android:layout_marginLeft="155dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="50dp"
             android:enabled="true"
             android:text="SINGOUT"
+            android:background="#ea7a1d"
 
 
             />

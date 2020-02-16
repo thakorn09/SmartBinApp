@@ -96,7 +96,7 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
         val user = FirebaseAuth.getInstance().currentUser
         Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/${user!!.uid}/1")
             .also { println(it) }
-            .response { result -> }
+            .response { result -> println(result) }
 
 
 
@@ -104,10 +104,9 @@ class ScannerActivity : AppCompatActivity(),ResultHandler{
 
 
         val intent = Intent(this, ContinueTrashActivity::class.java)
-        intent.putExtra("scan", sCan)
+        intent.putExtra("scan",sCan)
         startActivity(intent)
         finish()
-
     }
 
 
