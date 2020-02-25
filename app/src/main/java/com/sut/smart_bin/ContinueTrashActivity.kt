@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -29,6 +30,10 @@ class ContinueTrashActivity : AppCompatActivity() {
         val sCan = intent.getSerializableExtra("scan")
 
 
+
+
+
+
         btn_NoTrash.setOnClickListener {
             Toast.makeText(applicationContext,"Finish",Toast.LENGTH_SHORT).show()
             Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/${user!!.uid}/0")
@@ -43,6 +48,19 @@ class ContinueTrashActivity : AppCompatActivity() {
             Fuel.put("https://smartbin-sut.herokuapp.com/SmartBin/${sCan}/${user!!.uid}/2")
                 .also { println(it) }
                 .response { result -> }
+
+
+
+            val dialogBuilder = AlertDialog.Builder(this)
+
+            dialogBuilder.setTitle("Warning")
+            dialogBuilder.setPositiveButton("OK") {dialog, which ->
+            }
+            dialogBuilder.setMessage("Please wait for the machine to finish working. If you want to continue disposing, please click Yes. If not please click No.")
+            val alert =  dialogBuilder.create()
+            println(alert)
+            alert.show()
+
         }
         //btn_YesTrash = findViewById(R.id.btn_YesTrash) as Button
 

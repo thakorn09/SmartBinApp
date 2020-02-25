@@ -37,7 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5]'
     implementation 'com.facebook.android:facebook-login:5.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
@@ -58,5 +58,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
     implementation 'com.google.firebase:firebase-firestore:21.4.0'
 
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
 }

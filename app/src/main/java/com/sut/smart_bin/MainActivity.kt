@@ -1,8 +1,10 @@
 package com.sut.smart_bin
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,6 +14,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -23,6 +30,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
 
         val user = FirebaseAuth.getInstance().currentUser
         val userid = FirebaseAuth.getInstance().getUid().toString()
@@ -82,6 +92,18 @@ class MainActivity : AppCompatActivity() {
                               u.Point=upoint
                               UpPoint(u.Point)
                           }
+
+                        val recycle = u.GoodBin.toFloat()
+                        val nonrecycle = u.BadBin.toFloat()
+
+                        val totaltrash = recycle+nonrecycle
+
+                        val avgrecycle = (recycle/totaltrash)*100
+                        val avgnonrecycle = (nonrecycle/totaltrash)*100
+
+                        setUpPieChartData(avgrecycle,avgnonrecycle)
+
+
 
                         val nametxt = findViewById<TextView>(R.id.id_name)
                         nametxt.text = u.Name
@@ -149,15 +171,19 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        btn_sign_out.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            moveMainPage()
+
+        val navigationView = findViewById<View>(R.id.nav) as BottomNavigationView
+        navigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId){
+                R.id.home -> Toast.makeText(applicationContext, "You are Home Page", Toast.LENGTH_SHORT).show()
+
+                R.id.profile -> moveProfile(u)
+
+                R.id.signout -> moveMainPage()
+            }
+            true
         }
 
-        btn_edit_proflie.setOnClickListener {
-            moveProfile(u)
-
-        }
         btn_cast = findViewById(R.id.btn_cast) as Button
 
         btn_cast!!.setOnClickListener{
@@ -167,14 +193,43 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpPieChartData(avgrecycle:Float ,avgnonrecycle:Float) {
+        val R =avgrecycle
+        val NR = avgnonrecycle
+        if (R.toInt()!=0||NR.toInt()!=0){
+        val yVals = ArrayList<PieEntry>()
+        yVals.add(PieEntry(avgrecycle, "Can Recycle"))
+        yVals.add(PieEntry(avgnonrecycle, "Can not Recycle"))
+
+
+        val dataSet = PieDataSet(yVals, "")
+
+        dataSet.valueTextSize = 15f
+        val colors = java.util.ArrayList<Int>()
+        colors.add(Color.parseColor("#86ff70"))
+        colors.add(Color.parseColor("#ffb126"))
+        dataSet.setColors(colors)
+        val data = PieData(dataSet)
+        pieChart.data = data
+        pieChart.centerTextRadiusPercent = 100f
+        pieChart.isDrawHoleEnabled = false
+        pieChart.legend.isEnabled = false
+        pieChart.description.isEnabled = false
+            pieChart.setEntryLabelColor(Color.BLACK)
+            pieChart.transparentCircleRadius=25f
+            pieChart.animateXY(1500,1500)
+         }
+    }
 
     fun moveProfile(u: Users) {
         val intent = Intent(this, ProfileActivity::class.java)
         intent.putExtra("USERS", u)
         startActivity(intent)
+
     }
 
     fun moveMainPage() {
+        FirebaseAuth.getInstance().signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }

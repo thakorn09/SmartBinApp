@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -73,6 +75,18 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
+        val navigationView = findViewById<View>(R.id.nav) as BottomNavigationView
+        navigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId){
+                R.id.home ->  moveHome()
+
+                R.id.profile -> Toast.makeText(applicationContext, "You are Profile Page", Toast.LENGTH_SHORT).show()
+
+                R.id.signout -> moveMainPage()
+            }
+            true
+        }
+
 
     }
 
@@ -111,5 +125,15 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
+    fun moveMainPage() {
+        FirebaseAuth.getInstance().signOut()
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+
+    fun moveHome() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 
 }
